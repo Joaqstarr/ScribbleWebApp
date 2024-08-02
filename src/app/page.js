@@ -1,3 +1,7 @@
+"use client"
+
+import Layout from "./components/layout";
+
 export default function Home() {
-  return <div>Hello MDC 27</div>;
+  return (<Layout/>);
 }

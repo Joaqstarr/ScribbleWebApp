@@ -1,16 +1,19 @@
+import { CreateUser } from "./loginActions";
+import { redirect } from "next/navigation";
+
+`use client`
 export default function Login() {
-  const handleLogin = (formData) => {
+  const handleLogin = async function(formData){
     const user = formData.get("name");
     const id = formData.get("id");
-    /*
-    alert(`User '${email}'`);
-
-    const supabase = createClient();
-    supabase.auth.signInWithOtp({
-      email,
-    });
-  */
-    alert(`User ${user} attempting to join game ${id}`);
+    console.log("clicked");
+    
+    const result = await CreateUser(user, id);
+    console.log(result);
+    if(result){
+      redirect(`/game/${id}/${user}`);
+    }
+    //alert(`User ${user} attempting to join game ${id}`);
   };
 
 

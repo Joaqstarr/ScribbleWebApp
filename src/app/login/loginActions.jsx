@@ -1,4 +1,3 @@
-
 import { createClient } from "@/utils/supabase/client"
 
 export async function CreateUser(username, id){
@@ -56,9 +55,11 @@ async function InsertUser(username, gameid,  supabase){
 
 async function GetUser(supabase){
     const user = await supabase.auth.getUser();
-    console.log(JSON.stringify(user));
+    
+   // console.log(JSON.stringify(user));
+
     if(user.data.user == null){
-        console.log("User not existing, creating...")
+        console.log("User not exist, creating...")
         const { AuthData, error } = await supabase.auth.signInAnonymously()
 
         if(error){

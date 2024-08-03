@@ -1,6 +1,9 @@
 import { createClient } from "@/utils/supabase/client"
+import { GetUser } from "../services/AuthActions";
+import { DecodeId } from "../host/hostActions";
 
-export async function CreateUser(username, id){
+export async function CreateUser(username, gameid){
+    const id = DecodeId(gameid);
     const supabase = createClient();
     const gameData = await ReadRow(id, supabase);
 
@@ -17,7 +20,8 @@ async function ReadRow(id, supabase){
     const { data, error } = await supabase
     .from('GameData')
     .select()
-    .eq("id", id)
+    .eq("game_code", id)
+    .eq("archived", false)
     .maybeSingle()
 
     if(error){
@@ -53,24 +57,4 @@ async function InsertUser(username, gameid,  supabase){
     return true;
 }
 
-async function GetUser(supabase){
-    const user = await supabase.auth.getUser();
-    
-   // console.log(JSON.stringify(user));
 
-    if(user.data.user == null){
-        console.log("User not exist, creating...")
-        const { AuthData, error } = await supabase.auth.signInAnonymously()
-
-        if(error){
-            console.log("Error Anonymously signing in: " + error);
-            return;
-        }
-
-        const newUser = await supabase.auth.getUser();
-        console.log(JSON.stringify(newUser));
-
-        return newUser;
-    }
-    return user; 
-}

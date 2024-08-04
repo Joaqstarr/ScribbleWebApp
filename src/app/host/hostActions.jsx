@@ -1,13 +1,18 @@
 import { createClient } from "@/utils/supabase/client";
-import { GetUser } from "../services/AuthActions";
+import { GetNewUser } from "../services/AuthActions";
 import Sqids from "sqids";
 
+let debounce = false;
+
 export async function CreateGame(){
+    if(debounce == true) return;
+    debounce = true;
     const supabase = createClient();
-    const user = await GetUser(supabase);
+    const user = await GetNewUser(supabase);
 
     if(user.data.user == null || user == null){
         console.log("Could not authenticate user.");
+        debounce = false;
         return "Error creating match";
     }
 
@@ -17,10 +22,9 @@ export async function CreateGame(){
         console.log("Could not add match to database.");
         return "Error creating match";
     }
-
     console.log(matchID);
     const encodedId = EncodeId(matchID);
-    console.log(encodedId + ", decoded: " + DecodeId(encodedId));
+    debounce = false;
     return encodedId;
 }
 
@@ -100,3 +104,31 @@ function numToArray(num){
     return outArr;
 }
 
+export async function GetConnectedUsers(){
+    const supabase = createClient();
+    const gameRow = await supabase.auth.getUser();
+
+    const { data, error } = await supabase
+    .from('GameData')
+    .select('*, players: Users(*)')
+    .eq("id", gameRow.data.user.id)
+    .eq("archived", false)
+    .eq("Users.archived", false)
+    .maybeSingle()
+
+
+    if(error){
+        PrintObject("Error getting connected users: " + error);
+        return [];
+    }
+    const out = data.players;
+    if(out == null){
+        return [];
+    }
+    return out;
+
+}
+
+function PrintObject(obj){
+    console.log(JSON.stringify(obj));
+}

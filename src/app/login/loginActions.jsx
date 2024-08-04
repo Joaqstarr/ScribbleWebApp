@@ -8,10 +8,11 @@ export async function CreateUser(username, gameid){
     const gameData = await ReadRow(id, supabase);
 
     if(gameData == null)return false;
-
+    console.log(JSON.stringify(gameData).id);
+    const gameUUID = gameData.id;
     GetUser(supabase);
 
-    return InsertUser(username, id, supabase);
+    return InsertUser(username, gameUUID, supabase);
 
 }
 

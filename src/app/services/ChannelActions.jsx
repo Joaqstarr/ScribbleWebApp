@@ -23,3 +23,18 @@ export function SubscribeToChannel(GameUID, callback){
         callback({channel: subbedChannel});
     });
 }
+export function ListenToEvent(channel, name, callback){
+    channel.on(
+        'broadcast', 
+        {event: name}, 
+        callback,
+    )
+}
+
+export function BroadcastEvent(channel, name, payload){
+    channel.send({
+        type: 'broadcast',
+        event: name,
+        payload: payload
+    });
+}

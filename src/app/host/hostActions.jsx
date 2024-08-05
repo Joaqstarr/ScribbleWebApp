@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { GetNewUser } from "../services/AuthActions";
 import Sqids from "sqids";
+import { CreateLobby } from "../services/GameHost";
 
 let debounce = false;
 
@@ -22,9 +23,14 @@ export async function CreateGame(){
         console.log("Could not add match to database.");
         return "Error creating match";
     }
+
+
+    CreateLobby(user.data.user.id);
+
     console.log(matchID);
     const encodedId = EncodeId(matchID);
     debounce = false;
+
     return encodedId;
 }
 

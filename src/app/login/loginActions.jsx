@@ -1,7 +1,9 @@
 import { createClient } from "@/utils/supabase/client"
 import { GetUser } from "../services/AuthActions";
 import { DecodeId } from "../host/hostActions";
+import { JoinLobby
 
+ } from "../services/GameClient";
 export async function CreateUser(username, gameid){
     const id = DecodeId(gameid);
     const supabase = createClient();
@@ -12,6 +14,8 @@ export async function CreateUser(username, gameid){
     const gameUUID = gameData.id;
     GetUser(supabase);
 
+    JoinLobby(gameUUID, username);
+    
     return InsertUser(username, gameUUID, supabase);
 
 }

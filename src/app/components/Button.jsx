@@ -6,5 +6,6 @@ export default function Button({text, path}){
         <div className="w-min bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
         {text}
         </div>
-    </Link>)
+    </Link>
+    )
 }

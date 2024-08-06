@@ -61,9 +61,23 @@ function OnPlayerSubmitLabel(payload){
     if(player != undefined){
         player[propertyName] = payload.payload.label;
     }
-    console.log(payload.payload.name +" submitted label: " + payload.payload.label +", " + JSON.stringify(Players));
+    if(AllPlayersHaveProp(propertyName)){
+        SendPromptsToPlayers();
+    }
 
 }
+
+
+function SendPromptsToPlayers(){
+    for(let i = 0; i < Players.length; i++){
+        const playerToSendTo = Players.at(i).next;
+        const promptProperty = Round + "Label";
+        const playerLabel = Players.at(i)[promptProperty];
+
+        BroadcastToPlayer(playerToSendTo.name ,"ShowDrawing", {label: playerLabel});
+    }
+}
+
 
 export function BroadcastToPlayers(eventName, payload){
     if(SavedChannel == null){
@@ -75,7 +89,7 @@ export function BroadcastToPlayers(eventName, payload){
 
 export function BroadcastToPlayer(playerName, eventName, payload){
     const event = playerName + eventName;
-    BroadcastToPlayer(event, payload);
+    BroadcastToPlayers(event, payload);
 }
 
 function GetPlayerByUsername(playerName){
@@ -83,4 +97,12 @@ function GetPlayerByUsername(playerName){
         return obj.name === playerName
       })
     return result;
+}
+
+function AllPlayersHaveProp(prop){
+    for(let i = 0; i < Players.length; i++){
+        if(Players.at(i)[prop] == null)
+            return false;
+    }
+    return true;
 }

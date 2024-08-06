@@ -2,13 +2,18 @@
 import { useEffect, useState } from "react";
 import { Label } from "@/app/components/Label";
 import { SubmitLabel } from "@/app/services/GameClient";
-
+import { Draw } from "@/app/components/Draw";
 export default function GamePage(){
-    let [gameState, setGameState] = useState("wait");
+    const [gameState, setGameState] = useState("wait");
+    const [label, setLabel] = useState("");
 
     useEffect(() => {
         addEventListener("ShowLabel", (event) => {
             setGameState("label");
+        }, false);
+        addEventListener("ShowDraw", (event) => {
+            setGameState("draw"); 
+            setLabel(event.label);
         }, false);
     },[]);
 
@@ -24,6 +29,8 @@ export default function GamePage(){
             return (<p>Waiting....</p>);
         case "label":
             return (<Label callback={handleLabeled}/>);
+        case "draw":
+            return (<Draw label={label}/>);
         default:
             return (<p>Waiting....</p>);
     }

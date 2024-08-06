@@ -25,10 +25,12 @@ function SubscribeToEvents(channel, username){
 }
 
 function OnShowDrawing(payload){
+    const event = new Event("ShowDraw");
+    event.label = payload.payload.label;
+    dispatchEvent(event);
 
 }
 function OnShowLabel(payload){
-
 }
 
 function OnShowInitialLabel(payload){

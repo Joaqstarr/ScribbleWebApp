@@ -13,7 +13,6 @@ export function PlayerList(){
             {rows}
         </div>
     )
-
 }
 
 function Row(name, key){

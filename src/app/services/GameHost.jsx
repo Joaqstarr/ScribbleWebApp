@@ -2,8 +2,11 @@ import { SubscribeToChannel, ListenToEvent, BroadcastEvent } from "./ChannelActi
 
 const Players = [];
 let SavedChannel = null;
-export function CreateLobby(UUID){
+let Round = 1;
 
+
+export function CreateLobby(UUID){
+    Round = 1;
 
     const OnSubcribed = ({channel }) => {
         console.log("subscribed to " + UUID)
@@ -43,7 +46,13 @@ function OnPlayerSubmitDrawing(payload){
 }
 
 function OnPlayerSubmitLabel(payload){
-    console.log(payload.payload.name +" submitted label.");
+    const player = GetPlayerByUsername(payload.payload.name);
+    const propertyName = Round+"Label";
+    if(player != undefined){
+        player[propertyName] = payload.payload.label;
+    }
+    console.log(payload.payload.name +" submitted label: " + payload.payload.label +", " + JSON.stringify(Players));
+
 }
 
 export function BroadcastToPlayers(eventName, payload){
@@ -57,4 +66,11 @@ export function BroadcastToPlayers(eventName, payload){
 export function BroadcastToPlayer(playerName, eventName, payload){
     const event = playerName + eventName;
     BroadcastToPlayer(event, payload);
+}
+
+function GetPlayerByUsername(playerName){
+    var result = Players.find(obj => {
+        return obj.name === playerName
+      })
+    return result;
 }

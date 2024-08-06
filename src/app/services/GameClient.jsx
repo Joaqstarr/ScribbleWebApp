@@ -1,11 +1,13 @@
 import { SubscribeToChannel, ListenToEvent , BroadcastEvent} from "./ChannelActions";
 
-
+let SavedUsername = "";
+let SavedChannel = null;
 export function JoinLobby(UUID, Username){
 
-
+    SavedUsername = Username;
 
     const OnSubcribed = ({channel }) => {
+        SavedChannel = channel;
         SubscribeToEvents(channel, Username);
         BroadcastEvent(channel, 'join', {name: Username});
     }
@@ -30,8 +32,10 @@ function OnShowLabel(payload){
 }
 
 function OnShowInitialLabel(payload){
-    console.log("Showing " +payload.payload.name + " label");
-
     const event = new Event("ShowLabel");
     dispatchEvent(event);
+}
+
+export function SubmitLabel(Label){
+    BroadcastEvent(SavedChannel, 'submitLabel', {name: SavedUsername, label: Label});
 }

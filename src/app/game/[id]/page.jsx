@@ -1,11 +1,11 @@
 "use client"
 import { useEffect } from "react";
-import { GetPlayers, BroadcastToPlayers } from "@/app/services/GameHost";
+import { BroadcastToPlayers, GenerateGameOrder } from "@/app/services/GameHost";
 
 export default function GameHost(){
     useEffect(() => {
-        const ConnectedPlayers = GetPlayers();
-        SendInitialNameMessage(ConnectedPlayers);
+        GenerateGameOrder();
+        SendInitialNameMessage();
     }, []);
     return(
         <div>
@@ -15,6 +15,6 @@ export default function GameHost(){
 }
 
 
-function SendInitialNameMessage(players){
+function SendInitialNameMessage(){
     BroadcastToPlayers("ShowLabel", {name: "Initial"});
 }

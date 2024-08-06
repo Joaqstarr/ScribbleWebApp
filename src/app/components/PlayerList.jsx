@@ -1,11 +1,13 @@
+import {useState , useEffect } from "react";
+export function PlayerList(){
+    const [rows, setRows] = useState([]);
 
-export function PlayerList({players}){
-    const rows = [];
-
-    for(let i = 0; i < players.length; i++){
-        rows.push(Row(players.at(i).name, i));
-    }
-
+    useEffect(()=>{
+        addEventListener("PlayerJoined", (event) => {
+            setRows(oldArray => [...oldArray, Row(event.name, oldArray.length)]);
+        }, false);
+      },[])
+    
     return(
         <div>
             {rows}

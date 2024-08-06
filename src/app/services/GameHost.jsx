@@ -18,14 +18,20 @@ export function CreateLobby(UUID){
     }
 
 
-    
-
     SubscribeToChannel(UUID, OnSubcribed);
     
     return {
         RetrievePlayers: GetPlayers,
     }
 
+}
+
+export function GenerateGameOrder(){
+    if(Players.length <= 1) return;
+
+    for(let i = 0; i < Players.length; i++){
+        Players.at(i).next = Players.at((i+1) % Players.length);
+    }
 }
 
 
@@ -39,12 +45,16 @@ function OnPlayerJoin(payload){
     Players.push(joinedPlayer);
 
     console.log("Players: " + JSON.stringify(Players));
+
+
+    const event = new Event("PlayerJoined");
+    event.name = playerName;
+    dispatchEvent(event);
 }
 
 function OnPlayerSubmitDrawing(payload){
     console.log(payload.payload.name +" submitted drawing.");
 }
-
 function OnPlayerSubmitLabel(payload){
     const player = GetPlayerByUsername(payload.payload.name);
     const propertyName = Round+"Label";

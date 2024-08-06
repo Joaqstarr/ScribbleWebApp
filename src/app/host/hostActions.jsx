@@ -109,32 +109,3 @@ function numToArray(num){
 
     return outArr;
 }
-
-export async function GetConnectedUsers(){
-    const supabase = createClient();
-    const gameRow = await supabase.auth.getUser();
-
-    const { data, error } = await supabase
-    .from('GameData')
-    .select('*, players: Users(*)')
-    .eq("id", gameRow.data.user.id)
-    .eq("archived", false)
-    .eq("Users.archived", false)
-    .maybeSingle()
-
-
-    if(error){
-        PrintObject("Error getting connected users: " + error);
-        return [];
-    }
-    const out = data.players;
-    if(out == null){
-        return [];
-    }
-    return out;
-
-}
-
-function PrintObject(obj){
-    console.log(JSON.stringify(obj));
-}

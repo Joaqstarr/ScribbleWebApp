@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
+    "@joaqstarr/react-sketch-canvas": "^7.0.6-next.4",
     "@supabase/realtime-js": "^2.10.4",
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.44.4",

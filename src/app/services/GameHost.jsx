@@ -44,7 +44,6 @@ function OnPlayerJoin(payload){
     const joinedPlayer = {name: playerName,}
     Players.push(joinedPlayer);
 
-    console.log("Players: " + JSON.stringify(Players));
 
 
     const event = new Event("PlayerJoined");
@@ -53,7 +52,16 @@ function OnPlayerJoin(payload){
 }
 
 function OnPlayerSubmitDrawing(payload){
-    console.log(payload.payload.name +" submitted drawing.");
+    console.log(payload.payload.name +" submitted drawing: " + payload.payload.image);
+    const player = GetPlayerByUsername(payload.payload.name);
+    const propertyName = Round+"Image";
+    if(player != undefined){
+        player[propertyName] = payload.payload.image;
+    }
+    if(AllPlayersHaveProp(propertyName)){
+        SendImagesToPlayers();
+        Round++;
+    }
 }
 function OnPlayerSubmitLabel(payload){
     const player = GetPlayerByUsername(payload.payload.name);
@@ -67,7 +75,15 @@ function OnPlayerSubmitLabel(payload){
 
 }
 
+function SendImagesToPlayers(){
+    for(let i = 0; i < Players.length; i++){
+        const playerToSendTo = Players.at(i).next;
+        const promptProperty = Round + "Image";
+        const playerImage = Players.at(i)[promptProperty];
 
+        BroadcastToPlayer(playerToSendTo.name ,"ShowLabel", {image: playerImage});
+    }
+}
 function SendPromptsToPlayers(){
     for(let i = 0; i < Players.length; i++){
         const playerToSendTo = Players.at(i).next;

@@ -31,6 +31,10 @@ function OnShowDrawing(payload){
 
 }
 function OnShowLabel(payload){
+
+    const event = new Event("ShowLabel");
+    event.image = payload.payload.image;
+    dispatchEvent(event);
 }
 
 function OnShowInitialLabel(payload){
@@ -40,4 +44,9 @@ function OnShowInitialLabel(payload){
 
 export function SubmitLabel(Label){
     BroadcastEvent(SavedChannel, 'submitLabel', {name: SavedUsername, label: Label});
+}
+
+export function SubmitImage(imageSVG){
+    BroadcastEvent(SavedChannel, 'submitDrawing', {name: SavedUsername, image: imageSVG});
+
 }

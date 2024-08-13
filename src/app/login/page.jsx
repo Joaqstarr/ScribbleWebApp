@@ -3,11 +3,15 @@
 import { LoginComponent } from "../components/LoginComponent";
 import { CreateUser } from "./loginActions";
 import { redirect } from "next/navigation";
+import Background from "../components/Background";
 
 export default function Login() {
   
   return (
+    <Background>
       <LoginComponent handlelogin={handleLogin} />
+
+    </Background>
     )
 }
 

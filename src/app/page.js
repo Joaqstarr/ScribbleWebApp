@@ -1,15 +1,18 @@
 "use client"
 
-import Link from "next/link";
 import Button from "./components/Button";
+import Background from "./components/Background";
 
 export default function Home() {
   return (
-  <div>
-    <Button text="Join Game" path="/login" />
-    <br/><br/>
-    <Button text="Create Game" path="/host" />
+    <Background>
+      <div>
+        <Button text="Join Game" path="/login" />
+        <br/><br/>
+        <Button text="Create Game" path="/host" />
 
-  </div>
+      </div>
+    </Background>
+
   );
 }

@@ -3,6 +3,7 @@ import Button from "../components/Button";
 import { CreateGame } from "./hostActions";
 import { useState, useEffect } from "react";
 import { PlayerList } from "../components/PlayerList";
+import Background from "../components/Background";
 
 export default function Host() {
 
@@ -19,15 +20,18 @@ export default function Host() {
 
   const gamePath = "/game/"+gameId;
   return (
-    <div>
-        <h1>Hosting</h1>
-        <br/>
-        <p>Game Id: {gameId}</p>
-        <PlayerList />
-        <br/>
-        <Button text="Start" path={gamePath} />
-        <Button text="Back" path="/" />
-    </div>
+    <Background>
+      <div>
+          <h1>Hosting</h1>
+          <br/>
+          <p>Game Id: {gameId}</p>
+          <PlayerList />
+          <br/>
+          <Button text="Start" path={gamePath} />
+          <Button text="Back" path="/" />
+      </div>
+    </Background>
+
         
     )
 }

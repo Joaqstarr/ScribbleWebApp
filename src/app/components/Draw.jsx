@@ -1,37 +1,13 @@
 "use client"
 import { ReactSketchCanvas } from "@joaqstarr/react-sketch-canvas";
-import { useState, useEffect, useRef} from "react";
+import { useState, useRef} from "react";
 import {CallbackButton} from "./Button";
 
 export function Draw({label, callback}){
-    const [width, setWidth] = useState(null);
     const [selectedColor, setColor] = useState("red");
 
     const canvasRef = useRef(null);
     const divRef= useRef(null);
-
-    const SetCanvasRef = () => {
-
-    }
-    const UpdateWidth = (node) => {
-
-        if (node == null) return;
-
-        const newWidth = node.offsetWidth;
-        setWidth(newWidth);
-    }
-
-    useEffect(() => {
-
-        const getwidth = () => {
-            
-            UpdateWidth(divRef);
-
-        };
-        window.addEventListener("resize", getwidth);
-        // remove the event listener before the component gets unmounted
-        return () => window.removeEventListener("resize", getwidth);
-      }, []);
 
     const HandleSubmit = async () => {
         if(canvasRef != null) {
@@ -59,8 +35,8 @@ export function Draw({label, callback}){
         <div className="">
             <h1>Draw: {label}</h1>
             <div className="flex flex-col md:flex-row gap-2">
-                <div className="w-full h-52 bg-red-900 h-fit" ref={divRef}>
-                    <Canvas setWidth={width} stroke={4} color={selectedColor} refVar={canvasRef}/>
+                <div className="w-full h-52  h-fit md:max-w-md" ref={divRef}>
+                    <Canvas  stroke={4} color={selectedColor} refVar={canvasRef}/>
                 </div>
                 <div className="flex flex-row md:flex-col gap-2">
                     <ColorSelectButton color="red" callback={HandleColorSelect} currentColor={selectedColor}/>
@@ -89,21 +65,15 @@ export function Draw({label, callback}){
 function IconButton({icon, callback}){
     return (
         <div onClick={callback} className="h-min flex items-center flex-row" >
-            <i className={"text-2xl fa-solid " + icon}></i>
+            <i aria-hidden="true" className={"text-2xl fa-solid " + icon}></i>
         </div>
     )
 }
-function Canvas({setWidth, stroke, color, refVar}){
-
+function Canvas({ stroke, color, refVar}){
 
 
     return(
         <ReactSketchCanvas ref={refVar}
-        style={{
-            width: setWidth+"px",
-            height: setWidth+"px",
-          }}
-
         strokeWidth={stroke}
         strokeColor={color}
         />
